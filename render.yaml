@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: datta-krupa-app
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: gunicorn yourprojectname.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
