@@ -1,9 +1,19 @@
 services:
   - type: web
-    name: datta-krupa-app
-    env: python
+    name: datta-krupa-service
+    runtime: python
     buildCommand: "./build.sh"
-    startCommand: gunicorn yourprojectname.wsgi:application
+    startCommand: "gunicorn datta_krupa.wsgi:application"
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.9
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        value: your_secret_key
+      - key: ALLOWED_HOSTS
+        value: your-render-site.onrender.com
+      - key: USE_RENDER_DB
+        value: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: datta-krupa-db
+          property: connectionString
