@@ -1,0 +1,22 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore env and dependency folders
+.venv/
+env/
+venv/
+
+# Ignore environment secrets
+.env
+
+# Ignore static/media collected during deploy
+/staticfiles/
+/media/
+
+# Ignore system/IDE files
+.DS_Store
+*.sqlite3
+*.log
+.idea/
+.vscode/

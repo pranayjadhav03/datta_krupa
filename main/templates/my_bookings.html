@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings - Datta Krupa{% endblock %}
+
+{% block content %}
+<style>
+  .booking-card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 1.5rem;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(67, 97, 238, 0.2);
+    border-color: rgba(67, 97, 238, 0.2);
+  }
+
+  .booking-detail {
+    display: flex;
+    margin-bottom: 0.75rem;
+    align-items: flex-start;
+  }
+
+  .booking-detail strong {
+    min-width: 100px;
+    color: #4361ee;
+    font-weight: 600;
+  }
+
+  .booking-detail p {
+    flex: 1;
+    color: #334155;
+  }
+
+  .empty-bookings {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    max-width: 500px;
+    margin: 2rem auto;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  }
+
+  .empty-bookings a {
+    display: inline-block;
+    margin-top: 1rem;
+    background: linear-gradient(135deg, #4361ee, #3a56d4);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  }
+
+  .empty-bookings a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+  }
+</style>
+
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      My Bookings
+    </h2>
+    <a href="{% url 'book' %}" class="btn-primary">
+      <i class="fas fa-plus mr-2"></i> New Booking
+    </a>
+  </div>
+
+  {% if bookings %}
+    <div class="space-y-6">
+      {% for booking in bookings %}
+        <div class="booking-card">
+          <div class="booking-detail">
+            <strong>Laptop:</strong>
+            <p>{{ booking.laptop_model }}</p>
+          </div>
+          <div class="booking-detail">
+            <strong>Service:</strong>
+            <p>{{ booking.service_type }}</p>
+          </div>
+          <div class="booking-detail">
+            <strong>Date:</strong>
+            <p>{{ booking.preferred_date }}</p>
+          </div>
+          <div class="booking-detail">
+            <strong>Status:</strong>
+            <p>
+              <span class="px-3 py-1 rounded-full text-sm 
+                {% if booking.status == 'Pending' %}bg-yellow-100 text-yellow-800
+                {% elif booking.status == 'Completed' %}bg-green-100 text-green-800
+                {% elif booking.status == 'Cancelled' %}bg-red-100 text-red-800
+                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                {{ booking.status }}
+              </span>
+            </p>
+          </div>
+          <div class="booking-detail">
+            <strong>Booked On:</strong>
+            <p>{{ booking.created_at|date:"d M Y H:i" }}</p>
+          </div>
+
+          {% if booking.status == 'Pending' %}
+          <div class="flex justify-end space-x-3 mt-4">
+            <a href="{% url 'edit_booking' booking.id %}" class="text-sm text-blue-600 hover:underline">
+              <i class="fas fa-edit mr-1"></i> Edit
+            </a>
+            <a href="{% url 'delete_booking' booking.id %}" class="text-sm text-red-600 hover:underline"
+              onclick="return confirm('Are you sure you want to cancel this booking?');">
+              <i class="fas fa-times mr-1"></i> Cancel
+            </a>
+          </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty-bookings">
+      <div class="text-5xl mb-4 text-gray-300">
+        <i class="fas fa-calendar-times"></i>
+      </div>
+      <h3 class="text-xl font-semibold text-gray-700 mb-2">No Bookings Yet</h3>
+      <p class="text-gray-600 mb-4">You haven't booked any services with us yet.</p>
+      <a href="{% url 'book' %}" class="btn-primary">
+        <i class="fas fa-laptop-medical mr-2"></i> Book a Service Now
+      </a>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
