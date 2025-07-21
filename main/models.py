@@ -1,5 +1,5 @@
 # main/models.py
-
+from cloudinary.models import CloudinaryField
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -32,7 +32,7 @@ class RefurbishedLaptop(models.Model):
     specs = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     available = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='', blank=True, null=True)
+    image = CloudinaryField('image', blank=True, null=True)
 
     def __str__(self):
         return f"{self.brand} {self.model_name}"
