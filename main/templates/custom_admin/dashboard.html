@@ -295,6 +295,16 @@
     margin-top: 1rem;
   }
 </style>
+{% if messages %}
+  <div style="margin: 10px 0;">
+    {% for message in messages %}
+      <div style="padding: 10px; border-radius: 6px; background-color: #d1fae5; color: #065f46;">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
 
 <div class="dashboard-container">
   <div class="max-w-7xl mx-auto">
